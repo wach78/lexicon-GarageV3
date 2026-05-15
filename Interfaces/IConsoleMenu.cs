@@ -6,7 +6,7 @@ namespace GarageV2.Interfaces;
 
 public interface IConsoleMenu
 {
-    void Menu();
-    void VehicleTypeMenu();
-    void SearchVehicleTypeMenu();
+    public string GetMainMenuText();
+    public string GetVehicleTypeMenuText();
+    public string GetSearchVehicleTypeMenuText();
 }

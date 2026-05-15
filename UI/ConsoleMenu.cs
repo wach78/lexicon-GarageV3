@@ -5,9 +5,10 @@ namespace GarageV1.UI;
 
 internal class ConsoleMenu: IConsoleMenu
 {
-    public void Menu()
+    public string GetMainMenuText()
     {
-        Console.Write(
+
+       return  
             $"""
             Welcome to the main menu.
             Enter a number to choose an option.
@@ -23,13 +24,13 @@ internal class ConsoleMenu: IConsoleMenu
             {(int)MenuChoice.Exit} = Exit
 
             Your choice:
-            """
-        );
+            """;
+      
     }
 
-    public void VehicleTypeMenu()
+    public string GetVehicleTypeMenuText()
     {
-        Console.Write(
+        return
             $"""
             Choose vehicle type:
             {(int)VehicleTypeChoice.Car} = Car
@@ -40,26 +41,25 @@ internal class ConsoleMenu: IConsoleMenu
             {(int)VehicleTypeChoice.Back} = Back to main menu
 
             Your choice:
-            """
-        );
+            """;
+        
     }
 
-    public void SearchVehicleTypeMenu()
+    public string GetSearchVehicleTypeMenuText()
     {
-        Console.Write(
-         $"""
-        Search vehicles by filters.
-        Choose vehicle type.
+        return
+            $"""
+            Search vehicles by filters.
+            Choose vehicle type.
 
-        {(int)SearchVehicleTypes.All} = All vehicle types
-        {(int)SearchVehicleTypes.Car} = Car
-        {(int)SearchVehicleTypes.Motorcycle} = Motorcycle
-        {(int)SearchVehicleTypes.Bus} = Bus
-        {(int)SearchVehicleTypes.Boat} = Boat
-        {(int)SearchVehicleTypes.Airplane} = Airplane
+            {(int)SearchVehicleTypes.All} = All vehicle types
+            {(int)SearchVehicleTypes.Car} = Car
+            {(int)SearchVehicleTypes.Motorcycle} = Motorcycle
+            {(int)SearchVehicleTypes.Bus} = Bus
+            {(int)SearchVehicleTypes.Boat} = Boat
+            {(int)SearchVehicleTypes.Airplane} = Airplane
 
-        Your choice:
-        """
-        );
+            Your choice:
+            """;
     }
 }
