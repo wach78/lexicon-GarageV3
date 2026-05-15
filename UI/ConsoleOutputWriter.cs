@@ -1,5 +1,6 @@
-﻿using GarageV2.Interfaces;
-using GarageV2.Enums;
+﻿using GarageV2.Enums;
+using GarageV2.Interfaces;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace GarageV2.UI;
 
@@ -20,6 +21,16 @@ public class ConsoleOutputWriter : IConsoleOutputWriter
         Console.WriteLine();
     }
 
+    public void WriteError(string text)
+    {
+        ConsoleColor originalColor = Console.ForegroundColor;
+        Console.ForegroundColor = ConsoleColor.Red;
+
+        Console.WriteLine(text);
+
+        Console.ForegroundColor = originalColor;
+    }
+
     public void WaitForUser()
     {
         Console.WriteLine();
@@ -33,23 +44,23 @@ public class ConsoleOutputWriter : IConsoleOutputWriter
         switch (result)
         {
             case AddVehicleResult.Success:
-                Console.WriteLine("Vehicle was parked successfully.");
+                WriteLine("Vehicle was parked successfully.");
                 break;
 
             case AddVehicleResult.GarageFull:
-                Console.WriteLine("Could not park vehicle. The garage is full.");
+                WriteError("Could not park vehicle. The garage is full.");
                 break;
 
             case AddVehicleResult.DuplicatePlateNumber:
-                Console.WriteLine("Could not park vehicle. A vehicle with that plate number already exists.");
+                WriteError("Could not park vehicle. A vehicle with that plate number already exists.");
                 break;
 
             default:
-                Console.WriteLine("Could not park vehicle. Unknown error.");
+                WriteError("Could not park vehicle. Unknown error.");
                 break;
         }
 
-        Console.WriteLine();
+        WriteEmptyLine();
 
         WaitForUser();
     }

@@ -1,5 +1,6 @@
 ﻿using GarageV2.Enums;
 using GarageV2.Interfaces;
+using GarageV2.Moduls;
 
 namespace GarageV2.UI;
 
@@ -37,7 +38,7 @@ public class ConsoleUI : IConsoleUI
 
             if (menuChoice is null)
             {
-                _outputWriter.WriteLine("Invalid choice.");
+                _outputWriter.WriteError("Invalid choice.");
                 _outputWriter.WaitForUser();
                 continue;
             }
@@ -53,8 +54,16 @@ public class ConsoleUI : IConsoleUI
                     HandleCreateGarage();
                     break;
 
+                case MenuChoice.PopulateGarage:
+                    HandlePopulateGarage();
+                    break;
+
+                case MenuChoice.ListParkedVehicles:
+                    HandleListAllVehicles();
+                    break;
+
                 default:
-                    _outputWriter.WriteLine("This menu option is not implemented yet.");
+                    _outputWriter.WriteError("This menu option is not implemented yet.");
                     _outputWriter.WaitForUser();
                     break;
             }
@@ -71,7 +80,7 @@ public class ConsoleUI : IConsoleUI
 
         if (capacity is null)
         {
-           _outputWriter.WriteLine("Invalid capacity.");
+           _outputWriter.WriteError("Invalid capacity.");
            _outputWriter.WaitForUser();
             return;
         }
@@ -80,5 +89,53 @@ public class ConsoleUI : IConsoleUI
 
         _outputWriter.WriteLine($"Garage created with {capacity.Value} parking spaces.");
         _outputWriter.WaitForUser();
+    }
+
+    private void HandlePopulateGarage()
+    {
+        if (!EnsureGarageCreated())
+        {
+            return;
+        }
+
+        int? addedVehicles = _garageHandler.Populate();
+
+        _outputWriter.WriteLine($"{addedVehicles} vehicles were added to the garage.");
+        _outputWriter.WaitForUser();
+    }
+
+    private void HandleListAllVehicles()
+    {
+        if (!EnsureGarageCreated())
+        {
+            return;
+        }
+
+        Vehicle[]? vehicles = _garageHandler.GetParkedVehicles();
+
+        if (vehicles is null || vehicles.Length == 0)
+        {
+            _outputWriter.WriteLine("The garage is empty.");
+            _outputWriter.WaitForUser();
+            return;
+        }
+
+        foreach (Vehicle vehicle in vehicles)
+        {
+            Console.WriteLine(vehicle);
+        }
+    }
+
+    private bool EnsureGarageCreated()
+    {
+        if (_garageHandler.HasGarage)
+        {
+            return true;
+        }
+
+        _outputWriter.WriteError("You must create a garage first.");
+        _outputWriter.WaitForUser();
+
+        return false;
     }
 }

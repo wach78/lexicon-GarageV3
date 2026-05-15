@@ -41,9 +41,41 @@ public class Garage<T> : IEnumerable<T> where T : class, IVehicle
     
     }
 
+    public int AddMany(T[] vehicles)
+    {
+        int addedVehicles = 0;
+
+        foreach (T vehicle in vehicles)
+        {
+            AddVehicleResult result = Add(vehicle);
+
+            if (result == AddVehicleResult.Success)
+            {
+                addedVehicles++;
+            }
+        }
+
+        return addedVehicles;
+    }
+
     public void Remove()
     {
 
+    }
+
+    public T[] GetParkedVehicles()
+    {
+        T[] result = new T[Count];
+
+        int index = 0;
+
+        foreach (T vehicle in this)
+        {
+            result[index] = vehicle;
+            index++;
+        }
+
+        return result;
     }
 
     public T? FindByPlateNumber(string? plateNumber)
