@@ -8,16 +8,16 @@ public interface IGarageHandler
     void CreateGarage(int capacity);
     int? Populate();
     Vehicle[]? GetParkedVehicles();
-
+    Dictionary<string, int>? GetParkedVehicleTypeCounts();
     bool HasGarage { get; }
-    /*GarageExists();
+    /*
     GarageHasVehicles();
     
     AddVehicle(Vehicle vehicle);
     RemoveByPlateNumber(string? numberPlate);
     FindByPlateNumber(string? numberPlate);
     GetParkedVehicles();
-    GetParkedVehicleTypeCounts();
+    
     SearchVehicles(string? color, int? numberOfWheels, Type? vehicleType);
     */
 }

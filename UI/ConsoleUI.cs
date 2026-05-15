@@ -62,6 +62,10 @@ public class ConsoleUI : IConsoleUI
                     HandleListAllVehicles();
                     break;
 
+                case MenuChoice.ListVehicleTypes:
+                    HandleListVehiclesTypes();
+                    break;
+
                 default:
                     _outputWriter.WriteError("This menu option is not implemented yet.");
                     _outputWriter.WaitForUser();
@@ -121,9 +125,41 @@ public class ConsoleUI : IConsoleUI
         }
 
         foreach (Vehicle vehicle in vehicles)
-        {
-            Console.WriteLine(vehicle);
+        { 
+            _outputWriter.WriteLine(vehicle.ToString());
         }
+    }
+
+    private void HandleListVehiclesTypes()
+    {
+        if (!EnsureGarageCreated())
+        {
+            return;
+        }
+
+        Dictionary<string, int>? vehicleTypeCounts = _garageHandler.GetParkedVehicleTypeCounts();
+
+        if (vehicleTypeCounts is null)
+        {
+            _outputWriter.WriteError("You must create a garage first.");
+            _outputWriter.WaitForUser();
+            return;
+        }
+
+        if (vehicleTypeCounts.Count == 0)
+        {
+            _outputWriter.WriteLine("The garage is empty.");
+            _outputWriter.WaitForUser();
+            return;
+        }
+
+        foreach (KeyValuePair<string, int> vehicleTypeCount in vehicleTypeCounts)
+        {
+            _outputWriter.WriteLine($"{vehicleTypeCount.Key}: {vehicleTypeCount.Value}");
+        }
+
+        _outputWriter.WaitForUser();
+
     }
 
     private bool EnsureGarageCreated()
