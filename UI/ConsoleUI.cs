@@ -1,27 +1,26 @@
 ﻿using GarageV2.Enums;
 using GarageV2.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GarageV2.UI;
 
 public class ConsoleUI : IConsoleUI
 {
-    private readonly IConsoleMenu consoleMenu;
-    private readonly IConsoleInputReader inputReader;
-    private readonly IConsoleOutputWriter outputWriter;
+    private readonly IConsoleMenu _consoleMenu;
+    private readonly IConsoleInputReader _inputReader;
+    private readonly IConsoleOutputWriter _outputWriter;
+    private readonly IGarageHandler _garageHandler;
 
     public ConsoleUI(
-        IConsoleMenu consoleMenu, 
-        IConsoleInputReader inputReader, 
-        IConsoleOutputWriter outputWriter
+        IConsoleMenu consoleMenu,
+        IConsoleInputReader inputReader,
+        IConsoleOutputWriter outputWriter,
+        IGarageHandler garageHandler
         )
     {
-        this.consoleMenu = consoleMenu;
-        this.inputReader = inputReader;
-        this.outputWriter = outputWriter;
+        this._consoleMenu = consoleMenu;
+        this._inputReader = inputReader;
+        this._outputWriter = outputWriter;
+        this._garageHandler = garageHandler;
     }
 
     public void Run()
@@ -30,16 +29,16 @@ public class ConsoleUI : IConsoleUI
 
         while (isRunning)
         {
-            string menuText = consoleMenu.GetMainMenuText();
+            string menuText = _consoleMenu.GetMainMenuText();
 
-            outputWriter.Write(menuText);
+            _outputWriter.Write(menuText);
 
-            MenuChoice? menuChoice = inputReader.ReadMainMenuChoice();
+            MenuChoice? menuChoice = _inputReader.ReadMainMenuChoice();
 
             if (menuChoice is null)
             {
-                outputWriter.WriteLine("Invalid choice.");
-                outputWriter.WaitForUser();
+                _outputWriter.WriteLine("Invalid choice.");
+                _outputWriter.WaitForUser();
                 continue;
             }
 
@@ -47,16 +46,39 @@ public class ConsoleUI : IConsoleUI
             {
                 case MenuChoice.Exit:
                     isRunning = false;
-                    outputWriter.WriteLine("Exit.");
+                    _outputWriter.WriteLine("Exit.");
+                    break;
+
+                case MenuChoice.CreateGarage:
+                    HandleCreateGarage();
                     break;
 
                 default:
-                    outputWriter.WriteLine("This menu option is not implemented yet.");
-                    outputWriter.WaitForUser();
+                    _outputWriter.WriteLine("This menu option is not implemented yet.");
+                    _outputWriter.WaitForUser();
                     break;
             }
 
-            outputWriter.WriteEmptyLine();
+            _outputWriter.WriteEmptyLine();
         }
-}
+    }
+
+    private void HandleCreateGarage()
+    {
+        _outputWriter.Write("Enter garage capacity: ");
+
+        int? capacity = _inputReader.ReadPositiveInt();
+
+        if (capacity is null)
+        {
+           _outputWriter.WriteLine("Invalid capacity.");
+           _outputWriter.WaitForUser();
+            return;
+        }
+
+        _garageHandler.CreateGarage(capacity.Value);
+
+        _outputWriter.WriteLine($"Garage created with {capacity.Value} parking spaces.");
+        _outputWriter.WaitForUser();
+    }
 }
