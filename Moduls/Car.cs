@@ -2,7 +2,7 @@
 using Microsoft.VisualBasic;
 
 
-namespace GarageV1.Moduls;
+namespace GarageV2.Moduls;
 
 public class Car: Vehicle
 {

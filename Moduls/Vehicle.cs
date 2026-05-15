@@ -1,9 +1,7 @@
 ﻿using GarageV2.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace GarageV1.Moduls;
+
+namespace GarageV2.Moduls;
 
 public class Vehicle : IVehicle
 {

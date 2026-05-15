@@ -1,6 +1,6 @@
 ﻿
 
-namespace GarageV1.Moduls;
+namespace GarageV2.Moduls;
 
 public class MotorCycle: Vehicle
 {
