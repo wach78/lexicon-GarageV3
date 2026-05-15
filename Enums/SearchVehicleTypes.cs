@@ -1,6 +1,6 @@
 ﻿namespace GarageV2.Enums;
 
-internal enum SearchVehicleTypes
+public enum SearchVehicleTypes
 {
     All = 0,
     Car = 1,

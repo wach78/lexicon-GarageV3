@@ -3,7 +3,7 @@
 
 namespace GarageV2.Interfaces;
 
-internal interface IConsoleInputReader
+public interface IConsoleInputReader
 {
     public MenuChoice? ReadMainMenuChoice();
     public int? ReadPositiveInt();

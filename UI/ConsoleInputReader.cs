@@ -2,8 +2,7 @@
 using GarageV2.Interfaces;
 
 namespace GarageV2.UI;
-
-internal class ConsoleInputReader : IConsoleInputReader
+public class ConsoleInputReader : IConsoleInputReader
 {
     public MenuChoice? ReadMainMenuChoice()
     {

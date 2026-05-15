@@ -1,9 +1,9 @@
 ﻿using GarageV2.Enums;
 using GarageV2.Interfaces;
 
-namespace GarageV1.UI;
+namespace GarageV2.UI;
 
-internal class ConsoleMenu: IConsoleMenu
+public class ConsoleMenu: IConsoleMenu
 {
     public string GetMainMenuText()
     {

@@ -1,8 +1,7 @@
 ﻿
 
 namespace GarageV2.Enums;
-
-internal enum MenuChoice
+public enum MenuChoice
 {
     Exit = 0,
     CreateGarage = 1,

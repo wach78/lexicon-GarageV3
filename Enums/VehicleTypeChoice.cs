@@ -1,6 +1,6 @@
 ﻿namespace GarageV2.Enums;
 
-internal enum VehicleTypeChoice
+public enum VehicleTypeChoice
 {
     Back = 0,
     Car = 1,

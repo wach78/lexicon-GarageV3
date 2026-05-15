@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GarageV2.Interfaces
+namespace GarageV2.Interfaces;
+
+public interface IConsoleOutputWriter
 {
-    public interface IConsoleOutputWriter
-    {
-        public void Write(string text);
-        public void WriteLine(string text);
-        public void WriteEmptyLine();
-        public void WaitForUser();
-    }
+    public void Write(string text);
+    public void WriteLine(string text);
+    public void WriteEmptyLine();
+    public void WaitForUser();
 }
