@@ -1,6 +1,7 @@
 ﻿using GarageV2.Enums;
 using GarageV2.Interfaces;
 using GarageV2.Moduls;
+using System.Reflection.Metadata.Ecma335;
 
 namespace GarageV2.UI;
 
@@ -64,6 +65,10 @@ public class ConsoleUI : IConsoleUI
 
                 case MenuChoice.ListVehicleTypes:
                     HandleListVehiclesTypes();
+                    break;
+
+                case MenuChoice.RemoveVehicle:
+                    HandleRemoveVehicle();
                     break;
 
                 default:
@@ -160,6 +165,28 @@ public class ConsoleUI : IConsoleUI
 
         _outputWriter.WaitForUser();
 
+    }
+
+    public void HandleRemoveVehicle()
+    {
+        if (!EnsureGarageCreated())
+        {
+            return;
+        }
+
+        _outputWriter.Write("Enter plate number:");
+        string? platenumber = _inputReader.ReadRequiredString();
+
+        var isDeleted = _garageHandler.RemoveByPlateNumber(platenumber);
+
+        if (isDeleted is true)
+        {
+            _outputWriter.WriteLine($"Vehicle removed for plate number {platenumber}");
+        }
+        else
+        {
+            _outputWriter.WriteError($"Vehicle not found for plate number {platenumber}");
+        }
     }
 
     private bool EnsureGarageCreated()

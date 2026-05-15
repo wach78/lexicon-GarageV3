@@ -70,4 +70,14 @@ public class GarageHandler : IGarageHandler
 
         return vehicleTypeCounts;
     }
+
+    public bool RemoveByPlateNumber(string? numberPlate)
+    {
+        if (_garage is null)
+        {
+            return false;
+        }
+
+        return _garage.RemoveByPlateNumber(numberPlate);
+    }
 }

@@ -3,6 +3,7 @@ using GarageV2.Interfaces;
 using System.Collections;
 using System.ComponentModel;
 using System.Security.Cryptography.X509Certificates;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace GarageV2.Moduls;
@@ -58,9 +59,50 @@ public class Garage<T> : IEnumerable<T> where T : class, IVehicle
         return addedVehicles;
     }
 
-    public void Remove()
+    private int FindIndexByPlateNumber(string? plateNumber)
     {
+        if (string.IsNullOrWhiteSpace(plateNumber))
+        {
+            return -1;
+        }
 
+        for (int index = 0; index < _parkedVehicles.Length; index++)
+        {
+            T? vehicle = _parkedVehicles[index];
+
+            if (vehicle is null)
+            {
+                continue;
+            }
+
+            if (string.Equals(
+                vehicle.NumberPlate,
+                plateNumber.Trim(),
+                StringComparison.OrdinalIgnoreCase))
+            {
+                return index;
+            }
+        }
+
+        return -1;
+    }
+
+    public bool RemoveByPlateNumber(string? plateNumber)
+    {
+        if (string.IsNullOrWhiteSpace(plateNumber))
+        {
+            return false;
+        }
+
+        int index = FindIndexByPlateNumber(plateNumber);
+
+        if (index == -1)
+        {
+            return false;
+        }
+
+        _parkedVehicles[index] = null;
+        return true;
     }
 
     public T[] GetParkedVehicles()
@@ -87,7 +129,6 @@ public class Garage<T> : IEnumerable<T> where T : class, IVehicle
 
         foreach (T vehicle in this)
         {
-
             if (string.Equals(
                 vehicle.NumberPlate,
                 plateNumber,

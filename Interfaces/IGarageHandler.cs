@@ -10,6 +10,7 @@ public interface IGarageHandler
     Vehicle[]? GetParkedVehicles();
     Dictionary<string, int>? GetParkedVehicleTypeCounts();
     bool HasGarage { get; }
+    bool RemoveByPlateNumber(string? numberPlate);
     /*
     GarageHasVehicles();
     
