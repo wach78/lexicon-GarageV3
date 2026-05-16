@@ -31,12 +31,12 @@ public class GarageHandler : IGarageHandler
 
         Vehicle[] vehicles =
         [
-            new Car("ABC123", "Red", 4, FuelType.Gasoline),
-            new Car("abc321", "Green", 4, FuelType.Diesel),
-            new MotorCycle("MC123", "Black", 2, 600),
-            new Bus("bUs123", "Blue", 6, 45),
-            new Boat("BoA123", "White", 0, 8),
-            new AirPlane("air123", "Silver", 3, 2)
+            new Car("ABC123", VehicleColor.Red, 4, FuelType.Gasoline),
+            new Car("abc321", VehicleColor.Green, 4, FuelType.Diesel),
+            new MotorCycle("MCC123", VehicleColor.Black, 2, 600),
+            new Bus("bUs123", VehicleColor.Blue, 6, 45),
+            new Boat("BoA123", VehicleColor.White, 0, 8),
+            new AirPlane("air123", VehicleColor.Silver, 3, 2)
         ];
 
         return _garage.AddMany(vehicles);
@@ -89,5 +89,15 @@ public class GarageHandler : IGarageHandler
         }
 
         return _garage.FindByPlateNumber(numberPlate);
+    }
+
+    public AddVehicleResult ParkVehicle(Vehicle vehicle)
+    {
+        if (_garage is null)
+        {
+            return AddVehicleResult.GarageNotCreated;
+        }
+
+        return _garage.Add(vehicle);
     }
 }

@@ -4,23 +4,7 @@ using GarageV2.Interfaces;
 namespace GarageV2.UI;
 public class ConsoleInputReader : IConsoleInputReader
 {
-    public MenuChoice? ReadMainMenuChoice()
-    {
-
-        string? input = Console.ReadLine();
-
-        if (
-            int.TryParse(input, out int numericChoice)
-            && Enum.IsDefined(typeof(MenuChoice), numericChoice)
-        )
-        {
-            return (MenuChoice)numericChoice;
-        }
-
-        return null;
-    }
-
-
+    
     public int? ReadPositiveInt()
     {
         string? input = Console.ReadLine();
@@ -28,21 +12,6 @@ public class ConsoleInputReader : IConsoleInputReader
         if (int.TryParse(input, out int value) && value > 0)
         {
             return value;
-        }
-
-        return null;
-    }
-
-    public VehicleTypeChoice? ReadVehicleTypeChoice()
-    {
-        string? input = Console.ReadLine();
-
-        if (
-            int.TryParse(input, out int numericChoice)
-            && Enum.IsDefined(typeof(VehicleTypeChoice), numericChoice)
-        )
-        {
-            return (VehicleTypeChoice)numericChoice;
         }
 
         return null;
@@ -101,16 +70,41 @@ public class ConsoleInputReader : IConsoleInputReader
         return null;
     }
 
+    public VehicleColor? ReadVehicleColor()
+    {
+        return ReadEnumChoice<VehicleColor>();
+    }
+
+    public FuelType? ReadFuelType()
+    {
+        return ReadEnumChoice<FuelType>();
+    }
+
+    public VehicleTypeChoice? ReadVehicleTypeChoice()
+    {
+        return ReadEnumChoice<VehicleTypeChoice>();
+    }
+
+    public MenuChoice? ReadMainMenuChoice()
+    {
+        return ReadEnumChoice<MenuChoice>();
+    }
+
     public SearchVehicleTypes? ReadSearchVehicleTypeChoice()
+    {
+        return ReadEnumChoice<SearchVehicleTypes>();
+    }
+
+    private static TEnum? ReadEnumChoice<TEnum>() where TEnum : struct, Enum
     {
         string? input = Console.ReadLine();
 
         if (
             int.TryParse(input, out int numericChoice) &&
-            Enum.IsDefined(typeof(SearchVehicleTypes), numericChoice)
+            Enum.IsDefined(typeof(TEnum), numericChoice)
         )
         {
-            return (SearchVehicleTypes)numericChoice;
+            return (TEnum)Enum.ToObject(typeof(TEnum), numericChoice);
         }
 
         return null;

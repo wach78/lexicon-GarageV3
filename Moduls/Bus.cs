@@ -1,9 +1,11 @@
 ﻿
+using GarageV2.Enums;
+
 namespace GarageV2.Moduls;
 
 public class Bus: Vehicle
 {
-    public Bus(string numberPlate, string color, int numberOfWheels, int numberOfSeats)
+    public Bus(string numberPlate, VehicleColor color, int numberOfWheels, int numberOfSeats)
     : base(numberPlate, color, numberOfWheels)
     {
         NumberOfSeats = numberOfSeats;

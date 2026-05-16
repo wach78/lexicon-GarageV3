@@ -1,10 +1,12 @@
 ﻿
 
+using GarageV2.Enums;
+
 namespace GarageV2.Moduls;
 
 public class MotorCycle: Vehicle
 {
-    public MotorCycle(string numberPlate, string color, int numberOfWheels, int cylinderVolume)
+    public MotorCycle(string numberPlate, VehicleColor color, int numberOfWheels, int cylinderVolume)
     : base(numberPlate, color, numberOfWheels)
     {
         CylinderVolume = cylinderVolume;

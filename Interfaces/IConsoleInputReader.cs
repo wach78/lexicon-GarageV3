@@ -13,4 +13,6 @@ public interface IConsoleInputReader
     public string? ReadOptionalString();
     public int? ReadOptionalZeroOrPositiveInt();
     public SearchVehicleTypes? ReadSearchVehicleTypeChoice();
+    public VehicleColor? ReadVehicleColor();
+    public FuelType? ReadFuelType();
 }

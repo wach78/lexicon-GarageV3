@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GarageV2.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,7 +9,7 @@ public interface IVehicle
 {
     string NumberPlate { get; }
 
-    string Color { get; }
+    VehicleColor Color { get; }
 
     int NumberOfWheels { get; }
 }

@@ -1,8 +1,10 @@
-﻿namespace GarageV2.Moduls;
+﻿using GarageV2.Enums;
+
+namespace GarageV2.Moduls;
 
 public class Boat: Vehicle
 {
-    public Boat(string numberPlate, string color, int numberOfWheels, int length)
+    public Boat(string numberPlate, VehicleColor color, int numberOfWheels, int length)
     : base(numberPlate, color, numberOfWheels)
     {
         Length = length;

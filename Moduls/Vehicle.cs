@@ -1,4 +1,5 @@
-﻿using GarageV2.Interfaces;
+﻿using GarageV2.Enums;
+using GarageV2.Interfaces;
 
 
 namespace GarageV2.Moduls;
@@ -6,7 +7,7 @@ namespace GarageV2.Moduls;
 public class Vehicle : IVehicle
 {
 
-    public Vehicle(string numberPlate, string color, int numberOfWheels) 
+    public Vehicle(string numberPlate, VehicleColor color, int numberOfWheels) 
     {
         NumberPlate = numberPlate; 
         Color = color;
@@ -14,7 +15,7 @@ public class Vehicle : IVehicle
     }
 
     public string NumberPlate { get;}
-    public string Color { get;}
+    public VehicleColor Color { get; }
     public int NumberOfWheels { get;}
 
     public override string ToString()

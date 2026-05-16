@@ -1,4 +1,5 @@
-﻿using GarageV2.Moduls;
+﻿using GarageV2.Enums;
+using GarageV2.Moduls;
 
 
 namespace GarageV2.Interfaces;
@@ -12,10 +13,10 @@ public interface IGarageHandler
     bool HasGarage { get; }
     bool RemoveByPlateNumber(string? numberPlate);
     public Vehicle? FindByPlateNumber(string? numberPlate);
-
+    public AddVehicleResult ParkVehicle(Vehicle vehicle);
     /*
     
-    AddVehicle(Vehicle vehicle);
+    
     
     SearchVehicles(string? color, int? numberOfWheels, Type? vehicleType);
     */

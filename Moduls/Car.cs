@@ -6,7 +6,7 @@ namespace GarageV2.Moduls;
 
 public class Car: Vehicle
 {
-    public Car(string numberPlate, string color, int numberOfWheels, FuelType fuelType)
+    public Car(string numberPlate, VehicleColor color, int numberOfWheels, FuelType fuelType)
     : base(numberPlate, color, numberOfWheels)
     {
         FuelType = fuelType;

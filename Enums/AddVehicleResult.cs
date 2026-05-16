@@ -4,5 +4,6 @@ public enum AddVehicleResult
 {
     Success,
     GarageFull,
-    DuplicatePlateNumber
+    DuplicatePlateNumber,
+    GarageNotCreated
 }

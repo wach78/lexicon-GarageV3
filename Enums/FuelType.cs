@@ -2,6 +2,6 @@
 
 public enum FuelType
 {
-    Gasoline,
-    Diesel
+    Gasoline = 1,
+    Diesel = 2
 }

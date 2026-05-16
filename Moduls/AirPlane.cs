@@ -1,10 +1,12 @@
 ﻿
 
+using GarageV2.Enums;
+
 namespace GarageV2.Moduls;
 
 public class AirPlane: Vehicle
 {
-    public AirPlane(string numberPlate, string color, int numberOfWheels, int numberOfEngines)
+    public AirPlane(string numberPlate, VehicleColor color, int numberOfWheels, int numberOfEngines)
     : base(numberPlate, color, numberOfWheels)
     {
         NumberOfEngines = numberOfEngines;

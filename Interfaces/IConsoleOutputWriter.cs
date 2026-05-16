@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GarageV2.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,4 +12,5 @@ public interface IConsoleOutputWriter
     public void WriteEmptyLine();
     public void WriteError(string text);
     public void WaitForUser();
+    public void WriteAddVehicleResultMessage(AddVehicleResult result);
 }

@@ -55,6 +55,10 @@ public class ConsoleOutputWriter : IConsoleOutputWriter
                 WriteError("Could not park vehicle. A vehicle with that plate number already exists.");
                 break;
 
+            case AddVehicleResult.GarageNotCreated:
+                WriteError("Could not park vehicle. Create garage first.");
+                break;
+
             default:
                 WriteError("Could not park vehicle. Unknown error.");
                 break;

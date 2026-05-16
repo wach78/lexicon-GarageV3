@@ -62,4 +62,33 @@ public class ConsoleMenu: IConsoleMenu
             Your choice:
             """;
     }
+
+    public string GetVehicleColorMenuText()
+    {
+        return
+            $"""
+            Choose vehicle color:
+
+            {(int)VehicleColor.Black} = Black
+            {(int)VehicleColor.White} = White
+            {(int)VehicleColor.Red} = Red
+            {(int)VehicleColor.Blue} = Blue
+            {(int)VehicleColor.Green} = Green
+            {(int)VehicleColor.Silver} = Silver
+
+            Your choice:
+            """;
+    }
+
+    public string GetFuelTypeMenuText()
+    {
+        return
+            $"""
+            Choose Fuel:
+
+            {(int)FuelType.Gasoline} = Gasoline
+            {(int)FuelType.Diesel} = Diesel
+            Your choice:
+            """;
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using GarageV2.Enums;
 using GarageV2.Interfaces;
 using GarageV2.Moduls;
+using Microsoft.VisualBasic.FileIO;
 using System.Reflection.Metadata.Ecma335;
 
 namespace GarageV2.UI;
@@ -67,6 +68,10 @@ public class ConsoleUI : IConsoleUI
                     HandleListVehiclesTypes();
                     break;
 
+                case MenuChoice.ParkVehicle:
+                    HandleParkedVehicle();
+                    break;
+
                 case MenuChoice.RemoveVehicle:
                     HandleRemoveVehicle();
                     break;
@@ -93,8 +98,8 @@ public class ConsoleUI : IConsoleUI
 
         if (capacity is null)
         {
-           _outputWriter.WriteError("Invalid capacity.");
-           _outputWriter.WaitForUser();
+            _outputWriter.WriteError("Invalid capacity.");
+            _outputWriter.WaitForUser();
             return;
         }
 
@@ -134,7 +139,7 @@ public class ConsoleUI : IConsoleUI
         }
 
         foreach (Vehicle vehicle in vehicles)
-        { 
+        {
             _outputWriter.WriteLine(vehicle.ToString());
         }
     }
@@ -205,7 +210,7 @@ public class ConsoleUI : IConsoleUI
 
         var vehicle = _garageHandler.FindByPlateNumber(platenumber);
 
-        if (vehicle is null) 
+        if (vehicle is null)
         {
             _outputWriter.WriteLine($"Vehicle not found for plate number {platenumber}");
             _outputWriter.WaitForUser();
@@ -214,6 +219,48 @@ public class ConsoleUI : IConsoleUI
 
         _outputWriter.WriteLine($"Vehicle found: {vehicle}");
         _outputWriter.WaitForUser();
+    }
+
+    public void HandleParkedVehicle()
+    {
+        if (!EnsureGarageCreated())
+        {
+            return;
+        }
+
+        _outputWriter.Write(_consoleMenu.GetVehicleTypeMenuText());
+
+        VehicleTypeChoice? vehicleTypeChoice = _inputReader.ReadVehicleTypeChoice();
+
+        if (vehicleTypeChoice is null)
+        {
+            _outputWriter.WriteError("Invalid vehicle type.");
+            _outputWriter.WaitForUser();
+            return;
+        }
+
+        if (vehicleTypeChoice == VehicleTypeChoice.Back)
+        {
+            return;
+        }
+
+        CommonVehicleData? commonVehicleData = ReadCommonVehicleData();
+
+        if (commonVehicleData is null)
+        {
+            return;
+        }
+
+        Vehicle? vehicle = CreateVehicleFromChoice(vehicleTypeChoice.Value, commonVehicleData);
+
+        if (vehicle is null)
+        {
+            return;
+        }
+
+        AddVehicleResult result = _garageHandler.ParkVehicle(vehicle);
+
+        _outputWriter.WriteAddVehicleResultMessage(result);
     }
 
 
@@ -228,5 +275,168 @@ public class ConsoleUI : IConsoleUI
         _outputWriter.WaitForUser();
 
         return false;
+    }
+
+    private CommonVehicleData? ReadCommonVehicleData()
+    {
+        _outputWriter.Write("Enter plate number: ");
+        string? numberPlate = _inputReader.ReadRequiredString();
+
+        if (numberPlate is null)
+        {
+            _outputWriter.WriteError("Invalid plate number.");
+            _outputWriter.WaitForUser();
+            return null;
+        }
+
+        _outputWriter.Write("Enter number of wheels: ");
+        int? numberOfWheels = _inputReader.ReadZeroOrPositiveInt();
+
+        if (numberOfWheels is null)
+        {
+            _outputWriter.WriteError("Invalid number of wheels.");
+            _outputWriter.WaitForUser();
+            return null;
+        }
+
+        _outputWriter.Write(_consoleMenu.GetVehicleColorMenuText());
+
+
+        VehicleColor? color = _inputReader.ReadVehicleColor();
+
+        if (color is null)
+        {
+            _outputWriter.WriteError("Invalid color.");
+            _outputWriter.WaitForUser();
+            return null;
+        }
+
+        return new CommonVehicleData(
+            numberPlate,
+            color.Value,
+            numberOfWheels.Value
+        );
+    }
+
+    private Vehicle? CreateVehicleFromChoice(VehicleTypeChoice vehicleTypeChoice, CommonVehicleData commonVehicleData)
+    {
+        switch (vehicleTypeChoice)
+        {
+            case VehicleTypeChoice.Car:
+                return CreateCar(commonVehicleData);
+           
+            case VehicleTypeChoice.Motorcycle:
+                return CreateMotorCycle(commonVehicleData);
+ 
+            case VehicleTypeChoice.Bus:
+                return CreateBus(commonVehicleData);
+
+            case VehicleTypeChoice.Boat:
+                return CreateBoat(commonVehicleData);
+
+            case VehicleTypeChoice.Airplane:
+                return CreateAirPlane(commonVehicleData);
+            
+            default:
+                return null;
+        }
+    }
+
+    private Vehicle? CreateCar(CommonVehicleData commonVehicleData)
+    {
+        _outputWriter.Write(_consoleMenu.GetFuelTypeMenuText());
+      
+        FuelType? fuelType = _inputReader.ReadFuelType();
+
+        if (fuelType is null)
+        {
+            _outputWriter.WriteError("Invalid fuel type.");
+            _outputWriter.WaitForUser();
+            return null;
+        }
+
+        return new Car(
+            commonVehicleData.NumberPlate,
+            commonVehicleData.Color,
+            commonVehicleData.NumberOfWheels,
+            fuelType.Value
+        );
+    }
+
+    private Vehicle? CreateMotorCycle(CommonVehicleData commonVehicleData)
+    {
+        _outputWriter.Write("Enter Cylinder Volume: ");
+
+        int? cylinderVolume = _inputReader.ReadPositiveInt();
+
+        if (cylinderVolume is null)
+        {
+            _outputWriter.WriteLine("Invalid cylinderVolume.");
+            return null;
+        }
+
+        return new MotorCycle(
+            commonVehicleData.NumberPlate,
+            commonVehicleData.Color,
+            commonVehicleData.NumberOfWheels,
+            cylinderVolume.Value
+        );
+    }
+
+    private Vehicle? CreateBus(CommonVehicleData commonVehicleData)
+    {
+        _outputWriter.Write("Enter Number of Seats: ");
+        int? seats = _inputReader.ReadPositiveInt();
+
+        if (seats is null)
+        {
+            _outputWriter.WriteLine("Invalid number of seats.");
+            return null;
+        }
+
+        return new Bus(
+            commonVehicleData.NumberPlate,
+            commonVehicleData.Color,
+            commonVehicleData.NumberOfWheels,
+            seats.Value
+        );
+    }
+
+    private Vehicle? CreateBoat(CommonVehicleData commonVehicleData)
+    {
+        _outputWriter.Write("Enter lenght: ");
+        int? length = _inputReader.ReadPositiveInt();
+
+        if (length is null)
+        {
+            _outputWriter.WriteLine("Invalid length");
+            return null;
+        }
+
+        return new Boat(
+            commonVehicleData.NumberPlate,
+            commonVehicleData.Color,
+            commonVehicleData.NumberOfWheels,
+            length.Value
+        );
+    }
+
+    private Vehicle? CreateAirPlane(CommonVehicleData commonVehicleData)
+    {
+        _outputWriter.Write("Enter number of engines: ");
+        int? numberOfEngines = _inputReader.ReadPositiveInt();
+
+        if (numberOfEngines is null)
+        {
+            _outputWriter.WriteLine("Invalid number of engines.");
+            return null;
+        }
+
+        return new AirPlane(
+            commonVehicleData.NumberPlate,
+            commonVehicleData.Color,
+            commonVehicleData.NumberOfWheels,
+            numberOfEngines.Value
+        );
     }
 }
