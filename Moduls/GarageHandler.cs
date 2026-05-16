@@ -80,4 +80,14 @@ public class GarageHandler : IGarageHandler
 
         return _garage.RemoveByPlateNumber(numberPlate);
     }
+
+    public Vehicle? FindByPlateNumber(string? numberPlate)
+    {
+        if (_garage is null)
+        {
+            return null;
+        }
+
+        return _garage.FindByPlateNumber(numberPlate);
+    }
 }

@@ -71,6 +71,10 @@ public class ConsoleUI : IConsoleUI
                     HandleRemoveVehicle();
                     break;
 
+                case MenuChoice.FindVehicleByPlateNumber:
+                    HandleFindVehicleByPlateNumber();
+                    break;
+
                 default:
                     _outputWriter.WriteError("This menu option is not implemented yet.");
                     _outputWriter.WaitForUser();
@@ -188,6 +192,30 @@ public class ConsoleUI : IConsoleUI
             _outputWriter.WriteError($"Vehicle not found for plate number {platenumber}");
         }
     }
+
+    public void HandleFindVehicleByPlateNumber()
+    {
+        if (!EnsureGarageCreated())
+        {
+            return;
+        }
+
+        _outputWriter.Write("Enter plate number:");
+        string? platenumber = _inputReader.ReadRequiredString();
+
+        var vehicle = _garageHandler.FindByPlateNumber(platenumber);
+
+        if (vehicle is null) 
+        {
+            _outputWriter.WriteLine($"Vehicle not found for plate number {platenumber}");
+            _outputWriter.WaitForUser();
+            return;
+        }
+
+        _outputWriter.WriteLine($"Vehicle found: {vehicle}");
+        _outputWriter.WaitForUser();
+    }
+
 
     private bool EnsureGarageCreated()
     {

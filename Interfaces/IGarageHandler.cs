@@ -11,13 +11,11 @@ public interface IGarageHandler
     Dictionary<string, int>? GetParkedVehicleTypeCounts();
     bool HasGarage { get; }
     bool RemoveByPlateNumber(string? numberPlate);
+    public Vehicle? FindByPlateNumber(string? numberPlate);
+
     /*
-    GarageHasVehicles();
     
     AddVehicle(Vehicle vehicle);
-    RemoveByPlateNumber(string? numberPlate);
-    FindByPlateNumber(string? numberPlate);
-    GetParkedVehicles();
     
     SearchVehicles(string? color, int? numberOfWheels, Type? vehicleType);
     */
