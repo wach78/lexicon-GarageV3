@@ -100,4 +100,14 @@ public class GarageHandler : IGarageHandler
 
         return _garage.Add(vehicle);
     }
+
+    public Vehicle[]? SearchVehicles(VehicleColor? color, int? numberOfWheels, Type? vehicleType)
+    {
+        if (_garage is null)
+        {
+            return null;
+        }
+
+        return _garage.SearchVehicles(color, numberOfWheels, vehicleType);
+    }
 }

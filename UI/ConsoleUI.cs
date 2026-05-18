@@ -80,6 +80,10 @@ public class ConsoleUI : IConsoleUI
                     HandleFindVehicleByPlateNumber();
                     break;
 
+                case MenuChoice.SearchVehicles:
+                    HandleSearchVehicle();
+                    break;
+
                 default:
                     _outputWriter.WriteError("This menu option is not implemented yet.");
                     _outputWriter.WaitForUser();
@@ -438,5 +442,69 @@ public class ConsoleUI : IConsoleUI
             commonVehicleData.NumberOfWheels,
             numberOfEngines.Value
         );
+    }
+
+    public void HandleSearchVehicle()
+    {
+        if (!EnsureGarageCreated())
+        {
+            return;
+        }
+
+        _outputWriter.Write(_consoleMenu.GetSearchVehicleTypeMenuText());
+
+        SearchVehicleTypes? searchVehicleTypeChoice = _inputReader.ReadSearchVehicleTypeChoice();
+
+        if (searchVehicleTypeChoice is null)
+        {
+            _outputWriter.WriteLine("Invalid vehicle type.");
+            return;
+        }
+
+        Type? vehicleType = GetVehicleTypeFromSearchChoice(searchVehicleTypeChoice.Value);
+
+        _outputWriter.Write("Enter color, or press Enter for any color:");
+
+        VehicleColor? color = _inputReader.ReadVehicleColor();
+
+        _outputWriter.Write("Enter number of wheels, or press Enter for any number:");
+        int? numberOfWheels = _inputReader.ReadOptionalZeroOrPositiveInt();
+
+        Vehicle[]? vehicles = _garageHandler.SearchVehicles(color, numberOfWheels, vehicleType);
+
+        if (vehicles is null)
+        {
+            _outputWriter.WriteError("You must create a garage first.");
+            _outputWriter.WaitForUser();
+            return;
+        }
+
+        if (vehicles.Length == 0)
+        {
+            _outputWriter.WriteLine("No vehicles matched the search.");
+            _outputWriter.WaitForUser();
+            return;
+        }
+
+        _outputWriter.WriteEmptyLine();
+
+        foreach (Vehicle vehicle in vehicles)
+        {
+            _outputWriter.WriteLine(vehicle.ToString());
+        }
+    }
+
+    private static Type? GetVehicleTypeFromSearchChoice(SearchVehicleTypes searchVehicleTypeChoice)
+    {
+        return searchVehicleTypeChoice switch
+        {
+            SearchVehicleTypes.All => null,
+            SearchVehicleTypes.Car => typeof(Car),
+            SearchVehicleTypes.Motorcycle => typeof(MotorCycle),
+            SearchVehicleTypes.Bus => typeof(Bus),
+            SearchVehicleTypes.Boat => typeof(Boat),
+            SearchVehicleTypes.Airplane => typeof(AirPlane),
+            _ => null
+        };
     }
 }

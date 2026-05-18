@@ -14,10 +14,5 @@ public interface IGarageHandler
     bool RemoveByPlateNumber(string? numberPlate);
     public Vehicle? FindByPlateNumber(string? numberPlate);
     public AddVehicleResult ParkVehicle(Vehicle vehicle);
-    /*
-    
-    
-    
-    SearchVehicles(string? color, int? numberOfWheels, Type? vehicleType);
-    */
+    public Vehicle[]? SearchVehicles(VehicleColor? color, int? numberOfWheels, Type? vehicleType);
 }

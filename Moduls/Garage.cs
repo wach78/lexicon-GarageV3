@@ -141,6 +141,42 @@ public class Garage<T> : IEnumerable<T> where T : class, IVehicle
         return null;
     }
 
+    public T[] SearchVehicles(VehicleColor? color, int? numberOfWheels, Type? vehicleType)
+    {
+        T?[] matches = new T?[Count];
+        int matchCount = 0;
+
+        foreach (T vehicle in this)
+        {
+            if (color.HasValue && vehicle.Color != color.Value)
+            {
+                continue;
+            }
+
+            if (numberOfWheels.HasValue && vehicle.NumberOfWheels != numberOfWheels.Value)
+            {
+                continue;
+            }
+
+            if (vehicleType is not null && vehicle.GetType() != vehicleType)
+            {
+                continue;
+            }
+
+            matches[matchCount] = vehicle;
+            matchCount++;
+        }
+
+        T[] result = new T[matchCount];
+
+        for (int index = 0; index < matchCount; index++)
+        {
+            result[index] = matches[index]!;
+        }
+
+        return result;
+    }
+
     public IEnumerator<T> GetEnumerator()
     {
         foreach (T? parkedVehicle in _parkedVehicles)
