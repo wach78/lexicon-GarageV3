@@ -1,8 +1,8 @@
 ﻿using GarageV2.Enums;
 using GarageV2.Interfaces;
 using GarageV2.Moduls;
-using Microsoft.VisualBasic.FileIO;
-using System.Reflection.Metadata.Ecma335;
+using GarageV2.Validator;
+
 
 namespace GarageV2.UI;
 
@@ -187,18 +187,28 @@ public class ConsoleUI : IConsoleUI
             return;
         }
 
-        _outputWriter.Write("Enter plate number:");
-        string? platenumber = _inputReader.ReadRequiredString();
+        _outputWriter.Write($"Enter plate number ({VehicleInputValidator.PlateNumberFormatDescription}): ");
+        string? plateNumber = _inputReader.ReadPlateNumber();
 
-        var isDeleted = _garageHandler.RemoveByPlateNumber(platenumber);
+        if (plateNumber is null)
+        {
+            _outputWriter.WriteError(
+                $"Invalid plate number. Use {VehicleInputValidator.PlateNumberFormatDescription}."
+            );
+
+            _outputWriter.WaitForUser();
+            return;
+        }
+
+        var isDeleted = _garageHandler.RemoveByPlateNumber(plateNumber);
 
         if (isDeleted is true)
         {
-            _outputWriter.WriteLine($"Vehicle removed for plate number {platenumber}");
+            _outputWriter.WriteLine($"Vehicle removed for plate number {plateNumber}");
         }
         else
         {
-            _outputWriter.WriteError($"Vehicle not found for plate number {platenumber}");
+            _outputWriter.WriteError($"Vehicle not found for plate number {plateNumber}");
         }
     }
 
@@ -209,14 +219,24 @@ public class ConsoleUI : IConsoleUI
             return;
         }
 
-        _outputWriter.Write("Enter plate number:");
-        string? platenumber = _inputReader.ReadRequiredString();
+        _outputWriter.Write($"Enter plate number ({VehicleInputValidator.PlateNumberFormatDescription}): ");
+        string? plateNumber = _inputReader.ReadPlateNumber();
 
-        var vehicle = _garageHandler.FindByPlateNumber(platenumber);
+        if (plateNumber is null)
+        {
+            _outputWriter.WriteError(
+                $"Invalid plate number. Use {VehicleInputValidator.PlateNumberFormatDescription}."
+            );
+
+            _outputWriter.WaitForUser();
+            return;
+        }
+
+        var vehicle = _garageHandler.FindByPlateNumber(plateNumber);
 
         if (vehicle is null)
         {
-            _outputWriter.WriteLine($"Vehicle not found for plate number {platenumber}");
+            _outputWriter.WriteLine($"Vehicle not found for plate number {plateNumber}");
             _outputWriter.WaitForUser();
             return;
         }
@@ -283,25 +303,35 @@ public class ConsoleUI : IConsoleUI
 
     private CommonVehicleData? ReadCommonVehicleData()
     {
-        _outputWriter.Write("Enter plate number: ");
-        string? numberPlate = _inputReader.ReadRequiredString();
+        _outputWriter.Write($"Enter plate number ({VehicleInputValidator.PlateNumberFormatDescription}): ");
+        string? plateNumber = _inputReader.ReadPlateNumber();
 
-        if (numberPlate is null)
+        if (plateNumber is null)
         {
-            _outputWriter.WriteError("Invalid plate number.");
+            _outputWriter.WriteError(
+                $"Invalid plate number. Use {VehicleInputValidator.PlateNumberFormatDescription}."
+            );
+
             _outputWriter.WaitForUser();
             return null;
         }
 
-        _outputWriter.Write("Enter number of wheels: ");
-        int? numberOfWheels = _inputReader.ReadZeroOrPositiveInt();
+        _outputWriter.Write(
+            $"Enter number of wheels ({VehicleInputValidator.MinimumNumberOfWheels}-{VehicleInputValidator.MaximumNumberOfWheels}): "
+        );
+
+        int? numberOfWheels = _inputReader.ReadNumberOfWheels();
 
         if (numberOfWheels is null)
         {
-            _outputWriter.WriteError("Invalid number of wheels.");
+            _outputWriter.WriteError(
+                $"Invalid number of wheels. Enter a number between {VehicleInputValidator.MinimumNumberOfWheels} and {VehicleInputValidator.MaximumNumberOfWheels}."
+            );
+
             _outputWriter.WaitForUser();
             return null;
         }
+
 
         _outputWriter.Write(_consoleMenu.GetVehicleColorMenuText());
 
@@ -316,7 +346,7 @@ public class ConsoleUI : IConsoleUI
         }
 
         return new CommonVehicleData(
-            numberPlate,
+            plateNumber,
             color.Value,
             numberOfWheels.Value
         );
@@ -328,10 +358,10 @@ public class ConsoleUI : IConsoleUI
         {
             case VehicleTypeChoice.Car:
                 return CreateCar(commonVehicleData);
-           
+
             case VehicleTypeChoice.Motorcycle:
                 return CreateMotorCycle(commonVehicleData);
- 
+
             case VehicleTypeChoice.Bus:
                 return CreateBus(commonVehicleData);
 
@@ -340,7 +370,7 @@ public class ConsoleUI : IConsoleUI
 
             case VehicleTypeChoice.Airplane:
                 return CreateAirPlane(commonVehicleData);
-            
+
             default:
                 return null;
         }
@@ -349,7 +379,7 @@ public class ConsoleUI : IConsoleUI
     private Vehicle? CreateCar(CommonVehicleData commonVehicleData)
     {
         _outputWriter.Write(_consoleMenu.GetFuelTypeMenuText());
-      
+
         FuelType? fuelType = _inputReader.ReadFuelType();
 
         if (fuelType is null)
@@ -369,13 +399,19 @@ public class ConsoleUI : IConsoleUI
 
     private Vehicle? CreateMotorCycle(CommonVehicleData commonVehicleData)
     {
-        _outputWriter.Write("Enter Cylinder Volume: ");
+        _outputWriter.Write(
+            $"Enter cylinder volume ({VehicleInputValidator.MinimumCylinderVolume}-{VehicleInputValidator.MaximumCylinderVolume}): "
+        );
 
-        int? cylinderVolume = _inputReader.ReadPositiveInt();
+        int? cylinderVolume = _inputReader.ReadCylinderVolume();
 
         if (cylinderVolume is null)
         {
-            _outputWriter.WriteLine("Invalid cylinderVolume.");
+            _outputWriter.WriteError(
+                $"Invalid cylinder volume. Enter a number between {VehicleInputValidator.MinimumCylinderVolume} and {VehicleInputValidator.MaximumCylinderVolume}."
+            );
+
+            _outputWriter.WaitForUser();
             return null;
         }
 
@@ -389,12 +425,19 @@ public class ConsoleUI : IConsoleUI
 
     private Vehicle? CreateBus(CommonVehicleData commonVehicleData)
     {
-        _outputWriter.Write("Enter Number of Seats: ");
-        int? seats = _inputReader.ReadPositiveInt();
+        _outputWriter.Write(
+            $"Enter number of seats ({VehicleInputValidator.MinimumNumberOfSeats}-{VehicleInputValidator.MaximumNumberOfSeats}): "
+        );
+
+        int? seats = _inputReader.ReadNumberOfSeats();
 
         if (seats is null)
         {
-            _outputWriter.WriteLine("Invalid number of seats.");
+            _outputWriter.WriteError(
+                $"Invalid number of seats. Enter a number between {VehicleInputValidator.MinimumNumberOfSeats} and {VehicleInputValidator.MaximumNumberOfSeats}."
+            );
+
+            _outputWriter.WaitForUser();
             return null;
         }
 
@@ -408,12 +451,19 @@ public class ConsoleUI : IConsoleUI
 
     private Vehicle? CreateBoat(CommonVehicleData commonVehicleData)
     {
-        _outputWriter.Write("Enter lenght: ");
-        int? length = _inputReader.ReadPositiveInt();
+        _outputWriter.Write(
+            $"Enter length ({VehicleInputValidator.MinimumBoatLength}-{VehicleInputValidator.MaximumBoatLength}): "
+        );
+
+        int? length = _inputReader.ReadBoatLength();
 
         if (length is null)
         {
-            _outputWriter.WriteLine("Invalid length");
+            _outputWriter.WriteError(
+                $"Invalid length. Enter a number between {VehicleInputValidator.MinimumBoatLength} and {VehicleInputValidator.MaximumBoatLength}."
+            );
+
+            _outputWriter.WaitForUser();
             return null;
         }
 
@@ -427,12 +477,19 @@ public class ConsoleUI : IConsoleUI
 
     private Vehicle? CreateAirPlane(CommonVehicleData commonVehicleData)
     {
-        _outputWriter.Write("Enter number of engines: ");
-        int? numberOfEngines = _inputReader.ReadPositiveInt();
+        _outputWriter.Write(
+            $"Enter number of engines ({VehicleInputValidator.MinimumNumberOfEngines}-{VehicleInputValidator.MaximumNumberOfEngines}): "
+        );
+
+        int? numberOfEngines = _inputReader.ReadNumberOfEngines();
 
         if (numberOfEngines is null)
         {
-            _outputWriter.WriteLine("Invalid number of engines.");
+            _outputWriter.WriteError(
+                $"Invalid number of engines. Enter a number between {VehicleInputValidator.MinimumNumberOfEngines} and {VehicleInputValidator.MaximumNumberOfEngines}."
+            );
+
+            _outputWriter.WaitForUser();
             return null;
         }
 
@@ -463,12 +520,37 @@ public class ConsoleUI : IConsoleUI
 
         Type? vehicleType = GetVehicleTypeFromSearchChoice(searchVehicleTypeChoice.Value);
 
-        _outputWriter.Write("Enter color, or press Enter for any color:");
 
-        VehicleColor? color = _inputReader.ReadVehicleColor();
+        VehicleColor? color;
 
-        _outputWriter.Write("Enter number of wheels, or press Enter for any number:");
-        int? numberOfWheels = _inputReader.ReadOptionalZeroOrPositiveInt();
+        while (true)
+        {
+            _outputWriter.Write(_consoleMenu.GetVehicleColorMenuText());
+            _outputWriter.Write("Choose color, or press Enter for any color: ");
+
+            if (_inputReader.TryReadSearchVehicleColor(out color))
+            {
+                break;
+            }
+
+            _outputWriter.WriteError("Invalid color. Choose a number from the menu, or press Enter for any color.");
+        }
+
+        _outputWriter.Write(
+            $"Enter number of wheels ({VehicleInputValidator.MinimumNumberOfWheels}-{VehicleInputValidator.MaximumNumberOfWheels}): "
+        );
+
+        int? numberOfWheels = _inputReader.ReadNumberOfWheels();
+
+        if (numberOfWheels is null)
+        {
+            _outputWriter.WriteError(
+                $"Invalid number of wheels. Enter a number between {VehicleInputValidator.MinimumNumberOfWheels} and {VehicleInputValidator.MaximumNumberOfWheels}."
+            );
+
+            _outputWriter.WaitForUser();
+            return;
+        }
 
         Vehicle[]? vehicles = _garageHandler.SearchVehicles(color, numberOfWheels, vehicleType);
 
