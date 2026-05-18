@@ -2,8 +2,7 @@
 using GarageV2.Interfaces;
 using System.Collections;
 using System.ComponentModel;
-using System.Security.Cryptography.X509Certificates;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Linq;
 
 
 namespace GarageV2.Moduls;
@@ -107,17 +106,7 @@ public class Garage<T> : IEnumerable<T> where T : class, IVehicle
 
     public T[] GetParkedVehicles()
     {
-        T[] result = new T[Count];
-
-        int index = 0;
-
-        foreach (T vehicle in this)
-        {
-            result[index] = vehicle;
-            index++;
-        }
-
-        return result;
+        return this.ToArray();
     }
 
     public T? FindByPlateNumber(string? plateNumber)
@@ -127,54 +116,25 @@ public class Garage<T> : IEnumerable<T> where T : class, IVehicle
             return null;
         }
 
-        foreach (T vehicle in this)
-        {
-            if (string.Equals(
+        return this
+        .FirstOrDefault(vehicle =>
+            string.Equals(
                 vehicle.NumberPlate,
                 plateNumber,
-                StringComparison.OrdinalIgnoreCase))
-            {
-                return vehicle;
-            }
-        }
-
-        return null;
+                StringComparison.OrdinalIgnoreCase
+            )
+        );
     }
 
     public T[] SearchVehicles(VehicleColor? color, int? numberOfWheels, Type? vehicleType)
     {
-        T?[] matches = new T?[Count];
-        int matchCount = 0;
-
-        foreach (T vehicle in this)
-        {
-            if (color.HasValue && vehicle.Color != color.Value)
-            {
-                continue;
-            }
-
-            if (numberOfWheels.HasValue && vehicle.NumberOfWheels != numberOfWheels.Value)
-            {
-                continue;
-            }
-
-            if (vehicleType is not null && vehicle.GetType() != vehicleType)
-            {
-                continue;
-            }
-
-            matches[matchCount] = vehicle;
-            matchCount++;
-        }
-
-        T[] result = new T[matchCount];
-
-        for (int index = 0; index < matchCount; index++)
-        {
-            result[index] = matches[index]!;
-        }
-
-        return result;
+        return this
+            .Where(vehicle =>
+                (!color.HasValue || vehicle.Color == color.Value)
+                && (!numberOfWheels.HasValue || vehicle.NumberOfWheels == numberOfWheels.Value)
+                && (vehicleType is null || vehicle.GetType() == vehicleType)
+            )
+            .ToArray();
     }
 
     public IEnumerator<T> GetEnumerator()

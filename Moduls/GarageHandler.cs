@@ -51,24 +51,18 @@ public class GarageHandler : IGarageHandler
     {
         Vehicle[]? vehicles = _garage?.GetParkedVehicles();
 
+
         if (vehicles is null)
         {
             return null;
         }
 
-        Dictionary<string, int> vehicleTypeCounts = new();
-
-        foreach (Vehicle vehicle in vehicles)
-        {
-            string vehicleType = vehicle.GetType().Name;
-
-            if (!vehicleTypeCounts.TryAdd(vehicleType, 1))
-            {
-                vehicleTypeCounts[vehicleType]++;
-            }
-        }
-
-        return vehicleTypeCounts;
+        return vehicles
+        .GroupBy(vehicle => vehicle.GetType().Name)
+        .ToDictionary(
+            group => group.Key,
+            group => group.Count()
+        );
     }
 
     public bool RemoveByPlateNumber(string? numberPlate)
