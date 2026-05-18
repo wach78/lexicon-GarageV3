@@ -1,9 +1,6 @@
 ﻿using GarageV2.Enums;
 using GarageV2.Interfaces;
 using System.Collections;
-using System.ComponentModel;
-using System.Linq;
-
 
 namespace GarageV2.Moduls;
 
@@ -18,7 +15,6 @@ public class Garage<T> : IEnumerable<T> where T : class, IVehicle
     }
 
     public int Capacity { get; }
-    public int Count => _parkedVehicles.Count(vehicle => vehicle is not null);
 
     public AddVehicleResult Add(T vehicle)
     {

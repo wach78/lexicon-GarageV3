@@ -12,7 +12,6 @@ public class GarageHandler : IGarageHandler
 
     }
 
-    public int Capacity { get; }
     public bool HasGarage => _garage is not null;
 
     public void CreateGarage(int capacity)

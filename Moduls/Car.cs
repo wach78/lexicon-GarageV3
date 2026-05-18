@@ -1,7 +1,6 @@
 ﻿using GarageV2.Enums;
 using Microsoft.VisualBasic;
 
-
 namespace GarageV2.Moduls;
 
 public class Car: Vehicle
@@ -11,7 +10,6 @@ public class Car: Vehicle
     {
         FuelType = fuelType;
     }
-
 
     public FuelType FuelType { get;}
 

@@ -24,8 +24,7 @@ public class ConsoleMenu: IConsoleMenu
             {(int)MenuChoice.Exit} = Exit
 
             Your choice:
-            """;
-      
+            """; 
     }
 
     public string GetVehicleTypeMenuText()
@@ -42,7 +41,6 @@ public class ConsoleMenu: IConsoleMenu
 
             Your choice:
             """;
-        
     }
 
     public string GetSearchVehicleTypeMenuText()

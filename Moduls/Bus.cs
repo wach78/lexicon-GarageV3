@@ -1,5 +1,4 @@
-﻿
-using GarageV2.Enums;
+﻿using GarageV2.Enums;
 
 namespace GarageV2.Moduls;
 

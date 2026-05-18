@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace GarageV2.Interfaces;
 
-namespace GarageV2.Interfaces
+public interface IConsoleUI
 {
-    public interface IConsoleUI
-    {
-        void Run();
-    }
+    void Run();
 }

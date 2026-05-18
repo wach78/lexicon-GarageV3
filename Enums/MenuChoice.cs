@@ -1,6 +1,4 @@
-﻿
-
-namespace GarageV2.Enums;
+﻿namespace GarageV2.Enums;
 public enum MenuChoice
 {
     Exit = 0,

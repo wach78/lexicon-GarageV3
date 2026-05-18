@@ -3,7 +3,6 @@ using GarageV2.Interfaces;
 using GarageV2.Moduls;
 using GarageV2.Validator;
 
-
 namespace GarageV2.UI;
 
 public class ConsoleUI : IConsoleUI

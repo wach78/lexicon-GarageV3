@@ -1,6 +1,5 @@
 ﻿using GarageV2.Enums;
 using GarageV2.Interfaces;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace GarageV2.UI;
 
