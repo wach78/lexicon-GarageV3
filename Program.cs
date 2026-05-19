@@ -1,8 +1,8 @@
 ﻿
-using GarageV2.Interfaces;
-using GarageV2.Moduls;
-using GarageV2.UI;
-using GarageV2.Validator;
+using GarageV3.Interfaces;
+using GarageV3.Moduls;
+using GarageV3.UI;
+using GarageV3.Validator;
 
 internal class Program
 {

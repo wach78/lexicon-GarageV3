@@ -1,9 +1,9 @@
-﻿using GarageV2.Enums;
-using GarageV2.Interfaces;
-using GarageV2.Moduls;
-using GarageV2.Validator;
+using GarageV3.Enums;
+using GarageV3.Interfaces;
+using GarageV3.Moduls;
+using GarageV3.Validator;
 
-namespace GarageV2.UI;
+namespace GarageV3.UI;
 
 public class ConsoleUI : IConsoleUI
 {

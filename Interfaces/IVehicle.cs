@@ -1,6 +1,6 @@
-﻿using GarageV2.Enums;
+using GarageV3.Enums;
 
-namespace GarageV2.Interfaces;
+namespace GarageV3.Interfaces;
 
 public interface IVehicle
 {

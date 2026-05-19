@@ -1,4 +1,4 @@
-﻿namespace GarageV2.Interfaces;
+namespace GarageV3.Interfaces;
 
 public interface IConsoleUI
 {

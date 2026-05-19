@@ -1,7 +1,7 @@
-﻿using GarageV2.Enums;
-using GarageV2.Interfaces;
+using GarageV3.Enums;
+using GarageV3.Interfaces;
 
-namespace GarageV2.UI;
+namespace GarageV3.UI;
 
 public class ConsoleMenu: IConsoleMenu
 {

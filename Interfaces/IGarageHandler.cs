@@ -1,7 +1,7 @@
-﻿using GarageV2.Enums;
-using GarageV2.Moduls;
+using GarageV3.Enums;
+using GarageV3.Moduls;
 
-namespace GarageV2.Interfaces;
+namespace GarageV3.Interfaces;
 
 public interface IGarageHandler
 {

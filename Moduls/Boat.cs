@@ -1,6 +1,6 @@
-﻿using GarageV2.Enums;
+using GarageV3.Enums;
 
-namespace GarageV2.Moduls;
+namespace GarageV3.Moduls;
 
 public class Boat: Vehicle
 {

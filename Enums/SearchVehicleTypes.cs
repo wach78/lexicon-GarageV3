@@ -1,4 +1,4 @@
-﻿namespace GarageV2.Enums;
+namespace GarageV3.Enums;
 
 public enum SearchVehicleTypes
 {

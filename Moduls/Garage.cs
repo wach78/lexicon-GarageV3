@@ -1,8 +1,8 @@
-﻿using GarageV2.Enums;
-using GarageV2.Interfaces;
+using GarageV3.Enums;
+using GarageV3.Interfaces;
 using System.Collections;
 
-namespace GarageV2.Moduls;
+namespace GarageV3.Moduls;
 
 public class Garage<T> : IEnumerable<T> where T : class, IVehicle
 {

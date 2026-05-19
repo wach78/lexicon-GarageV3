@@ -1,8 +1,8 @@
-﻿using GarageV2.Interfaces;
+using GarageV3.Interfaces;
 
 using System.Text.RegularExpressions;
 
-namespace GarageV2.Validator;
+namespace GarageV3.Validator;
 
 public class VehicleInputValidator : IVehicleInputValidator
 {
