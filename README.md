@@ -2,7 +2,7 @@
 
 GarageV2 is a C# console application for managing a small vehicle garage. The application lets the user create a garage, populate it with sample vehicles, park new vehicles, list parked vehicles, count vehicle types, remove vehicles, find vehicles by plate number, and search vehicles by filters.
 
-The project is built as a learning exercise around object-oriented programming, interfaces, enums, validation, inheritance, and console-based user interaction.
+The project is built as a learning exercise around object-oriented programming, interfaces, enums, validation, inheritance,Generics ,LINQ and console-based user interaction.
 
 ## Features
 
