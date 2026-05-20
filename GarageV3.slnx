@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="GarageV3.csproj" />
+  <Project Path="GargeV3-Test/GargeV3-Test.csproj" />
 </Solution>

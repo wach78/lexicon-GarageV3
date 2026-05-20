@@ -7,4 +7,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="GargeV3-Test\**\*.cs" />
+    <EmbeddedResource Remove="GargeV3-Test\**\*" />
+    <None Remove="GargeV3-Test\**\*" />
+  </ItemGroup>
+
 </Project>

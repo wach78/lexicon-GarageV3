@@ -80,3 +80,21 @@ _ReSharper*/
 .env
 .env.*
 !.env.example
+
+# Test results
+TestResults/
+**/TestResults/
+
+# Code coverage
+coverage-report/
+**/coverage-report/
+coverage/
+**/coverage/
+coverage.cobertura.xml
+coverage.opencover.xml
+coverage.json
+*.coverage
+*.coveragexml
+
+# ReportGenerator output
+Summary.txt
