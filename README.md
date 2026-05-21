@@ -2,7 +2,7 @@
 
 GarageV3 is a C# console application for managing a small vehicle garage.
 
-This version continues from GarageV2 and focuses on improving structure, readability, validation, and testability. A key goal for GarageV3 is to add automated unit tests for the core garage logic and validation rules.
+This version continues from GarageV2 and focuses on improving structure, readability, validation, and testability. A key goal for GarageV3 is to add automated unit tests for the core garage logic.
 
 ## Project status
 
